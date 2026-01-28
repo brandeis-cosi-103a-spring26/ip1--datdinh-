@@ -70,7 +70,7 @@ public class Game {
      * 
      * Turn sequence:
      * 1. Play all cryptocurrency cards to get money
-     * 2. Buy the most expensive affordable card
+     * 2. Buy the most expensive affordable card (goes directly to discard pile)
      * 3. Cleanup (discard hand and draw new hand)
      * 4. Switch to the other player
      */
@@ -81,14 +81,16 @@ public class Game {
         // Step 2: Buy the most expensive affordable card
         Card boughtCard = buyMostExpensiveAffordable(money);
         
-        // Step 3: Cleanup - move hand (and bought card) to discard pile and draw new hand
+        // Step 3: Bought cards go directly to discard pile
         if (boughtCard != null) {
-            currentPlayer.getHand().add(boughtCard);
+            currentPlayer.addToDiscardPile(boughtCard);
         }
+        
+        // Step 4: Cleanup - discard hand and draw new hand
         currentPlayer.cleanup();
         currentPlayer.drawHand();
         
-        // Step 4: Switch players
+        // Step 5: Switch players
         Player temp = currentPlayer;
         currentPlayer = otherPlayer;
         otherPlayer = temp;
@@ -153,6 +155,43 @@ public class Game {
         }
         
         return getWinner();
+    }
+    
+    /**
+     * Gets player 1 (for game result display).
+     * @return player 1
+     */
+    public Player getPlayer1() {
+        return player1;
+    }
+    
+    /**
+     * Gets player 2 (for game result display).
+     * @return player 2
+     */
+    public Player getPlayer2() {
+        return player2;
+    }
+    
+    /**
+     * Main method to run the game.
+     */
+    public static void main(String[] args) {
+        System.out.println("=================================");
+        System.out.println("   Automation: The Game Start    ");
+        System.out.println("=================================\n");
+        
+        Game game = new Game();
+        Player winner = game.playGame();
+        
+        System.out.println("\n=================================");
+        System.out.println("           GAME OVER!            ");
+        System.out.println("=================================");
+        System.out.println("\nFinal Results:");
+        System.out.println("Player 1 Automation Points: " + game.getPlayer1().getTotalAutomationPoints());
+        System.out.println("Player 2 Automation Points: " + game.getPlayer2().getTotalAutomationPoints());
+        System.out.println("\n🎉 Winner: " + (winner == game.getPlayer1() ? "Player 1" : "Player 2") + " 🎉");
+        System.out.println("=================================\n");
     }
 }
 

@@ -151,5 +151,15 @@ public class Player {
     public int getDiscardPileSize() {
         return discardPile.size();
     }
+    
+    /**
+     * Adds a card directly to the discard pile.
+     * Used for purchased cards that go directly to discard pile.
+     *
+     * @param card the card to add to the discard pile
+     */
+    public void addToDiscardPile(Card card) {
+        discardPile.add(card);
+    }
 }
 
